@@ -1,27 +1,35 @@
 # GlassPocket — Overhead Myth Buster
 
-**Category:** Overall Winner (no specific sponsor tech required)
+**Live:** [glasspocket.vercel.app](https://glasspocket.vercel.app/)
+**Category:** Overall Winner + Best Use of Google AI (Gemini-powered narrative generator and chat)
 
 ## The Hook
 Most charity-rating tools reinforce the harmful "overhead ratio" myth. This contrarian tool argues
 against that dominant heuristic by reframing efficiency around outcomes and reserves.
 
 ## What It Does
-You paste a US charity's name, and it pulls their IRS Form 990 history to generate a plain-English,
+You search a US charity by name, and it pulls their IRS Form 990 history to generate a plain-English,
 context-aware financial explainer that debunks the overhead myth and shows why a high program-expense
-ratio can actually indicate starved infrastructure.
+ratio can actually indicate starved infrastructure. Instead of the overhead ratio, it surfaces reserve
+months, operating margin trends, staff-investment share, fundraising cost-per-dollar, and how the org
+compares to ~70 peers in its category. A Gemini-backed "myth-buster" card writes the narrative (with a
+one-click regenerate), and a grounded chat box lets you ask follow-up questions about that org's
+numbers specifically — it only answers from the org's own filing data and says so when a question falls
+outside that (leadership, programs, controversies, etc.).
 
 ## Architecture
 ProPublica Nonprofit Explorer API (Form 990 financials + PDF links)
-→ Node/Python for multi-year ratios and trends
-→ an LLM (Gemini or other) with a strict rubric prompt for the narrative
-→ Recharts for a peer-percentile chart
+→ TypeScript metrics engine for multi-year ratios and peer percentiles
+→ Gemini 2.5 Flash with a strict, JSON-schema-constrained prompt for the narrative (deterministic
+rubric-engine fallback if the API is unavailable), plus a grounded multi-turn chat endpoint
+→ Recharts for the trend and peer-percentile charts
 → Vercel
 
 ## Weekend MVP
-- 5–10 pre-cached organizations + live search
-- One narrative generator
-- One trend chart
+- 10 pre-cached organizations + live search
+- Narrative generator (Gemini + rubric fallback) with live regenerate
+- Trend chart + peer-percentile chart
+- Grounded chat: ask free-form questions about one org's financial history
 
 ## Key Challenge & Fix
 **Challenge:** 990 field inconsistency across filing types.
@@ -33,7 +41,7 @@ that's the thesis: we compute reserve months, revenue concentration, cost-per-do
 operating margin instead.)
 
 ## The Demo
-A 30-second GIF: type "charity: water" and watch the myth-busting card and trend chart render.
+![GlassPocket demo: searching GiveDirectly, the myth-buster card, trend/peer charts, and the grounded chat answering a follow-up question](./demo.gif)
 
 ---
 
