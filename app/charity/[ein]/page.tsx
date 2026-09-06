@@ -7,6 +7,7 @@ import MythBusterCard from "@/components/MythBusterCard";
 import TrendChart from "@/components/TrendChart";
 import PercentileChart from "@/components/PercentileChart";
 import StatTile from "@/components/StatTile";
+import CharityChat from "@/components/CharityChat";
 
 export const revalidate = 3600;
 
@@ -118,6 +119,10 @@ export default async function CharityPage({ params }: CharityPageProps) {
           How it compares to peers
         </h2>
         <PercentileChart percentiles={bundle.percentiles} />
+      </section>
+
+      <section className="mb-8">
+        <CharityChat ein={bundle.ein} orgName={bundle.name} />
       </section>
 
       {bundle.pdfUrlLatest && (
